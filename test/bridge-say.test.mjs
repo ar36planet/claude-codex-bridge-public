@@ -95,12 +95,23 @@ test("say bounds pre-pin output and accounts for dropped bytes", async () => {
 });
 
 test("say times out with started turn metadata and cleans listeners", async () => {
-  const client = new FakeClient({ complete: false });
-  await assert.rejects(() => say(client, {
-    threadId: "thread-1",
-    text: "hello",
-    timeoutMs: 10,
-  }), (error) => error.code === "TURN_TIMEOUT" && error.turnId === "turn-1" && error.started);
-  assert.equal(client.listenerCount("turn/completed"), 0);
-  assert.equal(client.listenerCount("item/agentMessage/delta"), 0);
+  // Node's test runner before v24 treats "no ref'd handles left" as "the event
+  // loop resolved" and cancels a test whose only pending work is an unref()'d
+  // timer — which is precisely what a timeout path is. The unref() is correct in
+  // production (a pending timeout must not hold the MCP server or CLI open), so
+  // the test holds a ref'd handle of its own rather than weakening the code
+  // under test.
+  const keepAlive = setInterval(() => {}, 1_000);
+  try {
+    const client = new FakeClient({ complete: false });
+    await assert.rejects(() => say(client, {
+      threadId: "thread-1",
+      text: "hello",
+      timeoutMs: 10,
+    }), (error) => error.code === "TURN_TIMEOUT" && error.turnId === "turn-1" && error.started);
+    assert.equal(client.listenerCount("turn/completed"), 0);
+    assert.equal(client.listenerCount("item/agentMessage/delta"), 0);
+  } finally {
+    clearInterval(keepAlive);
+  }
 });

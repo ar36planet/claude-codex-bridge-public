@@ -39,21 +39,32 @@ test("ThreadQueue serializes one thread and allows different threads to overlap"
 });
 
 test("a timed-out queue waiter cannot let later work pass an active turn", async () => {
-  const queue = new ThreadQueue();
-  let releaseFirst;
-  const gate = new Promise((resolve) => { releaseFirst = resolve; });
-  const events = [];
-  const first = queue.run("a", async () => {
-    events.push("first-start");
-    await gate;
-    events.push("first-end");
-  });
-  const timedOut = queue.run("a", async () => events.push("must-not-run"), { waitMs: 5 });
-  await assert.rejects(() => timedOut, { code: "THREAD_QUEUE_TIMEOUT" });
-  const third = queue.run("a", async () => events.push("third"));
-  await new Promise((resolve) => setTimeout(resolve, 10));
-  assert.deepEqual(events, ["first-start"]);
-  releaseFirst();
-  await Promise.all([first, third]);
-  assert.deepEqual(events, ["first-start", "first-end", "third"]);
+  // Node's test runner before v24 treats "no ref'd handles left" as "the event
+  // loop resolved" and cancels a test whose only pending work is an unref()'d
+  // timer — which is precisely what a timeout path is. The unref() is correct in
+  // production (a pending timeout must not hold the MCP server or CLI open), so
+  // the test holds a ref'd handle of its own rather than weakening the code
+  // under test.
+  const keepAlive = setInterval(() => {}, 1_000);
+  try {
+    const queue = new ThreadQueue();
+    let releaseFirst;
+    const gate = new Promise((resolve) => { releaseFirst = resolve; });
+    const events = [];
+    const first = queue.run("a", async () => {
+      events.push("first-start");
+      await gate;
+      events.push("first-end");
+    });
+    const timedOut = queue.run("a", async () => events.push("must-not-run"), { waitMs: 5 });
+    await assert.rejects(() => timedOut, { code: "THREAD_QUEUE_TIMEOUT" });
+    const third = queue.run("a", async () => events.push("third"));
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    assert.deepEqual(events, ["first-start"]);
+    releaseFirst();
+    await Promise.all([first, third]);
+    assert.deepEqual(events, ["first-start", "first-end", "third"]);
+  } finally {
+    clearInterval(keepAlive);
+  }
 });
