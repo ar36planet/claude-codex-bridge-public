@@ -24,12 +24,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ar36planet/codex-claude-bridge.git"
+    "url": "git+https://github.com/ar36planet/claude-codex-bridge-public.git"
   },
   "bugs": {
-    "url": "https://github.com/ar36planet/codex-claude-bridge/issues"
+    "url": "https://github.com/ar36planet/claude-codex-bridge-public/issues"
   },
-  "homepage": "https://github.com/ar36planet/codex-claude-bridge#readme",
+  "homepage": "https://github.com/ar36planet/claude-codex-bridge-public#readme",
   "keywords": [
     "claude-code",
     "codex",
