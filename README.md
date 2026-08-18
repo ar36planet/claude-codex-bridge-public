@@ -7,6 +7,11 @@
 `codex app-server` 的**同一條 thread** 上：Claude Code 送進去的訊息，會即時
 出現在你正在看的 TUI 畫面裡。
 
+> **要安裝的話看這裡：[SETUP.md](SETUP.md)（中文）· [SETUP.en.md](SETUP.en.md)（English）**
+>
+> 這份 README 講的是**設計理由與驗證紀錄** —— 為什麼是這個做法、哪些事實已經
+> 量過、哪些還沒。想直接跑起來的話 SETUP 比較快。
+
 驗證環境：codex-cli `0.147.0`，**Windows 11 與 macOS 26 都實測過**，
 兩邊都跑在 **Node 24 LTS**（Krypton）上。程式碼不綁平台（路徑一律走
 `node:path`，`resolveCodex()` 只有 Windows 分支是特例）。兩邊的差異與各自跑出來
