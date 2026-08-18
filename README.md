@@ -7,6 +7,8 @@
 `codex app-server` 的**同一條 thread** 上：Claude Code 送進去的訊息，會即時
 出現在你正在看的 TUI 畫面裡。
 
+> **English: [README.en.md](README.en.md)**
+>
 > **要安裝的話看這裡：[SETUP.md](SETUP.md)（中文）· [SETUP.en.md](SETUP.en.md)（English）**
 >
 > 這份 README 講的是**設計理由與驗證紀錄** —— 為什麼是這個做法、哪些事實已經
