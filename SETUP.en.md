@@ -11,7 +11,7 @@ a Codex TUI window open, and messages Claude Code sends appear directly in it.
 
 | | |
 |---|---|
-| **Node.js `>=22`** | v24 LTS recommended. v20 runs the program, but two tests get cancelled by its test runner |
+| **Node.js `>=22`** | v24 LTS recommended |
 | **Codex CLI** | Verified against `0.147.0`. Check `codex --version`, and make sure `codex login` is done |
 | **Claude Code** | The side that does the talking |
 
@@ -185,7 +185,6 @@ sharing one file would let whoever finishes first swallow everyone else's mail.
 | `(no live threads)` | No TUI attached yet, or it attached to a different port |
 | Port already in use | Pick another with `--port`, on both sides |
 | Codex edits files but the TUI never prompts for approval | See below |
-| `npm test` reports 2 cancelled | Node older than 22. See section 1 |
 
 ### About approvals
 

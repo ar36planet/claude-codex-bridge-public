@@ -4,9 +4,11 @@
 # `codex app-server`, which needs the Codex CLI and a logged-in account. They
 # stay a local, deliberate step.
 #
-# Node 20 is below what `engines` requires. It is in the matrix on purpose: the
-# floor was once set from an inference rather than a measurement, and this is
-# what turns "we think it needs 22" into something checked on every push.
+# The Node range mirrors `engines`. It was once set from an inference rather than
+# a measurement, and the first CI run caught that: Node 22 failed exactly as
+# Node 20 did, so the ">=22" floor was wrong until the tests were fixed. Node 20
+# was measured green afterwards but is deliberately not in the matrix — it is
+# past end-of-life, and testing a version `engines` refuses is a contradiction.
 #
 # The OS matrix is the point. This project claims to be platform-neutral —
 # paths always go through node:path, and resolveCodex() special-cases Windows
@@ -29,7 +31,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node: ['20', '22', '24']
+        node: ['22', '24']
 
     steps:
       - uses: actions/checkout@v4

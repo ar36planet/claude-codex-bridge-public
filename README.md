@@ -20,30 +20,17 @@
 的結果見下方「已驗證 / 未驗證」。
 
 Node 需求是 `>=22`（`package.json` 的 `engines`），建議直接用 **v24 LTS**。
+每次 push 都會在 CI 上跑 **ubuntu / macOS / Windows × Node 22、24** 的完整矩陣。
 
 <details>
-<summary>Node 20 會有兩個測試被取消（不是 bug）</summary>
+<summary>macOS：node 與 codex 版本不一致的常見狀況</summary>
 
-`node --test` 在 Node 20 底下會把
-`src/bridge.mjs` 與 `src/mcp/threadQueue.mjs` 裡刻意 `unref()` 過的逾時計時器
-判成「event loop already resolved」，於是取消掉兩個測試：
-
-```
-#4  say times out with started turn metadata and cleans listeners
-#20 a timed-out queue waiter cannot let later work pass an active turn
-```
-
-那兩個 `unref()` 是對的 —— 一個待中的 timeout 不該把 MCP server／CLI 的 process
-吊著不退出。Node 22+ 的 test runner 會自己保住 handle，計時器照樣 fire。主程式在
-Node 20 也跑得動（inbox hook 實測過），純粹是 test runner 的行為差異。
-
-**macOS 上容易踩到的原因**：`codex` 常是某個 nvm 版本底下的全域套件，而那個版本
-可能就是 Node 20，於是 `node` 預設就是 20。最乾淨的解法是讓 node 與 codex 待在
-同一個 LTS 版本：
+`codex` 常是某個 nvm 版本底下的全域套件，而那個版本可能低於 22 —— 於是預設的
+`node` 就跟著變舊。最乾淨的解法是讓 node 與 codex 待在同一個 LTS：
 
 ```bash
 nvm install 24 && nvm alias default 24
-nvm reinstall-packages 20        # 把 codex 等全域套件搬過去
+nvm reinstall-packages 20        # 把 codex 等全域套件搬過去（20 換成你原本的版本）
 ```
 
 （`codex` 的 bin 是 `#!/usr/bin/env node` 的 shim，它跟著 `PATH` 上的 node 跑，

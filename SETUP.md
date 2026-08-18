@@ -11,7 +11,7 @@ _English: [SETUP.en.md](SETUP.en.md) · 設計理由與驗證紀錄見 [README.m
 
 | | 說明 |
 |---|---|
-| **Node.js `>=22`** | 建議 v24 LTS。v20 跑得動主程式，但測試會有兩個被 test runner 取消 |
+| **Node.js `>=22`** | 建議 v24 LTS |
 | **Codex CLI** | 驗證於 `0.147.0`。`codex --version` 確認，並且已經 `codex login` |
 | **Claude Code** | 正方向的發話端 |
 
@@ -174,7 +174,6 @@ node scripts/inbox.mjs peek --as 你的信箱名   # 看但不消耗
 | `(no live threads)` | TUI 還沒接上，或接到別的 port |
 | port 被佔用 | `--port` 換一個，兩邊都要改 |
 | Codex 動手改檔案時 TUI 沒跳出核准提示 | 見下方 |
-| `npm test` 有 2 個 cancelled | Node 版本低於 22。見第 1 節 |
 
 ### 關於核准
 

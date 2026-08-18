@@ -16,32 +16,19 @@ and `resolveCodex()` special-cases Windows only. Per-platform results are in
 [Verified / not verified](#verified--not-verified).
 
 Node `>=22` is required (`engines` in `package.json`); v24 LTS is the recommended
-line.
+line. Every push runs the full matrix in CI: ubuntu / macOS / Windows against
+Node 22 and 24.
 
 <details>
-<summary>Two tests get cancelled on Node 20 (not a bug)</summary>
+<summary>macOS: node and codex often end up on different versions</summary>
 
-Under Node 20, `node --test` decides the event loop has already resolved when the
-only pending work is a deliberately `unref()`'d timeout — the ones in
-`src/bridge.mjs` and `src/mcp/threadQueue.mjs` — and cancels two tests:
-
-```
-#4  say times out with started turn metadata and cleans listeners
-#20 a timed-out queue waiter cannot let later work pass an active turn
-```
-
-Those `unref()` calls are correct: a pending timeout should not hold the MCP
-server or CLI process open. Node 22+ keeps a handle alive for the running test,
-so the timer still fires. The program itself runs fine on Node 20 — the inbox
-hook is used there in practice.
-
-**Why macOS hits this easily:** `codex` is often a global package under some nvm
-version, and that version may be Node 20, which then becomes your default `node`.
-The cleanest fix is putting node and codex on the same LTS:
+`codex` is frequently a global package under some nvm version, and that version
+may be older than 22 — which then becomes your default `node`. The cleanest fix
+is keeping node and codex on the same LTS:
 
 ```bash
 nvm install 24 && nvm alias default 24
-nvm reinstall-packages 20        # move codex and friends across
+nvm reinstall-packages 20        # move codex and friends across (20 = your old version)
 ```
 
 (`codex`'s bin is a `#!/usr/bin/env node` shim — it follows whatever node is on
