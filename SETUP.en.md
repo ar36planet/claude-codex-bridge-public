@@ -49,6 +49,17 @@ Confirm the install:
 npm test        # 21 tests; no model calls, no network
 ```
 
+> **Note: this repo ships a Claude Code Stop hook.**
+> `.claude/settings.json` is committed, so it takes effect as soon as you open
+> this project in Claude Code — before Claude finishes, it runs
+> `scripts/inbox.mjs hook` and hands back whatever is in the mailbox so Claude
+> keeps working. It is the trigger for the reverse direction in section 5.
+>
+> With an empty mailbox it is **completely silent** (exit 0, Claude stops as
+> normal) and only leaves a registration file in `.bridge-inbox/`, which is
+> gitignored. If you do not want it, delete `.claude/settings.json` — nothing
+> else depends on it.
+
 ## 3. Minimum working setup (three windows)
 
 ### Window 1 — the shared server (leave it running)

@@ -48,6 +48,15 @@ npm install
 npm test        # 21 個測試，不呼叫模型、不連網
 ```
 
+> **注意：這個 repo 附帶一個 Claude Code Stop hook。**
+> `.claude/settings.json` 有進版控，所以你一用 Claude Code 打開這個專案，它就生效
+> 了 —— 每次 Claude 要收工前會執行 `scripts/inbox.mjs hook`，把信箱裡的訊息交回去
+> 讓它繼續做。這是第 5 節那個反方向功能的觸發機制。
+>
+> 信箱是空的時候它**完全沉默**（exit 0，Claude 照常結束），只會在 `.bridge-inbox/`
+> 留一個登記檔（已 gitignore）。不想要的話，刪掉 `.claude/settings.json` 即可，
+> 其他功能都不受影響。
+
 ## 3. 最小可用設定（三個視窗）
 
 ### 視窗 1 — 共用 server（開著不要關）

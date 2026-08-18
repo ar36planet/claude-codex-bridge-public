@@ -1,5 +1,7 @@
 # claude-codex-bridge
 
+[![CI](https://github.com/ar36planet/claude-codex-bridge-public/actions/workflows/ci.yml/badge.svg)](https://github.com/ar36planet/claude-codex-bridge-public/actions/workflows/ci.yml)
+
 _中文：[README.md](README.md) · **Just want it running? → [SETUP.en.md](SETUP.en.md)**_
 
 Let **Claude Code** talk to **the Codex TUI you are actually looking at** — while
@@ -210,7 +212,9 @@ node scripts/inbox.mjs peek --as bridge
 
 This repo's `.claude/settings.json` already wires the Stop hook up (mailbox
 `bridge`), so Claude Code drains the mailbox and keeps going when it finishes work
-in this project. Delivery is exactly once: `drain()` renames before reading, so a
+in this project. **That file is committed, so cloning this repo and opening it in
+Claude Code puts the hook in effect for you too** — it is completely silent when
+the mailbox is empty, and deleting `.claude/settings.json` removes it. Delivery is exactly once: `drain()` renames before reading, so a
 concurrent writer is never read half-written.
 
 Rationale and trade-offs: [`docs/reverse-channel.md`](docs/reverse-channel.md).

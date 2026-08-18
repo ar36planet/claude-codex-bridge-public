@@ -1,5 +1,7 @@
 # claude-codex-bridge
 
+[![CI](https://github.com/ar36planet/claude-codex-bridge-public/actions/workflows/ci.yml/badge.svg)](https://github.com/ar36planet/claude-codex-bridge-public/actions/workflows/ci.yml)
+
 讓 **Claude Code** 對 **你眼前那個 Codex TUI** 說話 —— 而你全程看得到。
 反過來，Codex 也能把話送進 Claude Code 正在跑的那個 session。
 
@@ -255,7 +257,9 @@ node scripts/inbox.mjs peek --as bridge
 再退回 `default`。
 
 這個 repo 的 `.claude/settings.json` 已經掛好 Stop hook（信箱名 `bridge`），
-Claude Code 在這個專案裡收工時會自動把信箱清空並接著做。訊息**只會送達一次**：
+Claude Code 在這個專案裡收工時會自動把信箱清空並接著做。**那個檔案有進版控，所以
+你 clone 下來用 Claude Code 打開，這個 hook 就對你生效了** —— 信箱空的時候它完全
+沉默，不需要的話刪掉 `.claude/settings.json` 即可。訊息**只會送達一次**：
 `drain()` 先 rename 再讀，所以同時在寫的人不會被讀到一半。
 
 細節與取捨見 [`docs/reverse-channel.md`](docs/reverse-channel.md)。
