@@ -1,0 +1,4 @@
+.bridge.json
+.bridge-inbox/
+.bridge-output/
+node_modules/

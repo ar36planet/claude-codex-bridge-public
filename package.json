@@ -1,0 +1,44 @@
+{
+  "name": "claude-codex-bridge",
+  "version": "0.2.0",
+  "description": "A visible, bidirectional MCP and CLI bridge between Claude Code sessions and Codex TUI threads.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "serve": "node scripts/serve.mjs",
+    "talk": "node scripts/talk.mjs",
+    "inbox": "node scripts/inbox.mjs",
+    "mcp": "node scripts/mcp.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "npm run check && node --test",
+    "test:spikes": "npm run test:spike:multiclient && npm run test:spike:multithread && npm run test:spike:approvals",
+    "test:integration:mcp-app-server": "node scripts/spike-mcp.mjs",
+    "test:spike:multiclient": "node scripts/spike-multiclient.mjs",
+    "test:spike:multithread": "node scripts/spike-multithread.mjs",
+    "test:spike:approvals": "node scripts/spike-approvals.mjs",
+    "test:e2e:mcp-send": "node scripts/spike-mcp-send.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ar36planet/codex-claude-bridge.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ar36planet/codex-claude-bridge/issues"
+  },
+  "homepage": "https://github.com/ar36planet/codex-claude-bridge#readme",
+  "keywords": [
+    "claude-code",
+    "codex",
+    "bridge",
+    "app-server",
+    "mcp"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "zod": "4.4.3"
+  }
+}
